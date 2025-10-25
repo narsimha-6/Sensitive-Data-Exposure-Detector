@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Non-Sensitive Gallery</title>
+  <link rel="stylesheet" href="./assets/style.css">
+
+  <style>
+    body {
+      text-align: center;
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background-color: #222;
+      padding: 15px;
+      color: #fff;
+    }
+
+    .navbar .title a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .big-text {
+      font-size: 26px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .gallery-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 30px auto;
+      max-width: 1000px;
+    }
+
+    .gallery-grid img {
+      width: 220px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .gallery-grid img:hover {
+      transform: scale(1.05);
+    }
+
+    #clearBtn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #clearBtn:hover {
+      background-color: #c82333;
+    }
+
+    p {
+      font-size: 18px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="title"><a href="index.html">Sensitivity Detecto</a></div>
+  </nav>
+  <br><br><br>
+  <div class="section">
+    <div class="big-text">Non-Sensitive Images Gallery</div>
+
+    <button id="clearBtn">🧹 Clear Gallery</button>
+
+    <div id="gallery" class="gallery-grid"></div>
+  </div>
+
+  <script>
+    const galleryDiv = document.getElementById('gallery');
+    let gallery = JSON.parse(localStorage.getItem('nonSensitiveGallery')) || [];
+
+    function renderGallery() {
+      galleryDiv.innerHTML = "";
+      if (gallery.length === 0) {
+        galleryDiv.innerHTML = '<p>No non-sensitive images uploaded yet.</p>';
+      } else {
+        gallery.forEach(src => {
+          const img = document.createElement('img');
+          img.src = src;
+          galleryDiv.appendChild(img);
+        });
+      }
+    }
+
+    // Render images on load
+    renderGallery();
+
+    // Delete gallery only when button clicked
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      if (confirm("Are you sure you want to clear all images?")) {
+        localStorage.removeItem('nonSensitiveGallery');
+        gallery = [];
+        renderGallery();
+        alert("🧹 Gallery cleared successfully!");
+      }
+    });
+  </script>
+</body>
+</html>
